@@ -24,7 +24,7 @@ inputs:
   rsync_args:
     description: "Additional Rsync args"
     required: true
-    default: ""
+    default: "-rvzo --exclude='.git/' --exclude='.github/' --exclude='.git*'"
 
 
 runs:
