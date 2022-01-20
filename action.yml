@@ -1,0 +1,50 @@
+name: "sitkoru/rsync-deploy-action"
+description: "Action to deploy site to remote server via rsync"
+branding:
+  icon: "package"
+  color: "blue"
+
+inputs:
+  key:
+    description: "SSH key"
+    required: true
+  host:
+    description: "Remote host address"
+    required: true
+  user:
+    description: "Remote host user"
+    required: true
+  target:
+    description: "Remote host directory"
+    required: true
+  source:
+    description: "Local direct"
+    required: true
+    default: "."
+  rsync_args:
+    description: "Additional Rsync args"
+    required: true
+    default: ""
+
+
+runs:
+  using: "composite"
+  steps:
+    - name: Create remote directory
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ inputs.host }}
+        username: ${{ inputs.user }}
+        key: ${{ inputs.key }}
+        script_stop: true
+        script: |
+          mkdir -p ${{ inputs.target }}
+    - name: Deploy main files
+      uses: easingthemes/ssh-deploy@v2
+      env:
+        SSH_PRIVATE_KEY: ${{ inputs.key }}
+        ARGS: ${{ inputs.rsync_args }}
+        SOURCE: ${{ inputs.source }}
+        REMOTE_HOST: ${{ inputs.host }}
+        REMOTE_USER: ${{ inputs.user }}
+        TARGET: ${{ inputs.target }}
