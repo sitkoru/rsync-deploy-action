@@ -40,7 +40,7 @@ runs:
         script: |
           mkdir -p ${{ inputs.target }}
     - name: Deploy main files
-      uses: easingthemes/ssh-deploy@v2
+      uses: easingthemes/ssh-deploy@v4
       env:
         SSH_PRIVATE_KEY: ${{ inputs.key }}
         ARGS: ${{ inputs.rsync_args }}
